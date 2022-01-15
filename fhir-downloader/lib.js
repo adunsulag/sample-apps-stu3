@@ -238,7 +238,7 @@ function createTable(files) {
             // Convert those files to table rows
             files.forEach(f => {
                 let line = (
-                    padRight(`┃ ${f.name}${f.type == "deleted" ? " (del)" : ""}`, 42) +
+                    padRight(`┃ ${f.name} ${f.type} ${f.statusType == "deleted" ? " (del)" : ""}`, 42) +
                     padRight(`┃ ${f.chunks}`, 9) +
                     padRight(`┃ ${f.status}`, 14) +
                     padRight(`┃ ${f.rawBytes ? padLeft(humanFileSize(f.rawBytes), 9) : "     -"}` , 13) + 

@@ -53,6 +53,7 @@ APP
     .option('--global'                          , 'Global (system-level) export')
     .option('--no-gzip'                         , 'Do not request GZipped files')
     .option('-F, --output-format [string]'      , 'The output format you expect. Defaults to "application/fhir+ndjson"', "application/fhir+ndjson")
+    .option('--scope [list]'                   , 'Zero or more scopes to use for access permissions')
     .parse(process.argv);
 
 
@@ -400,13 +401,15 @@ function waitForFiles(startTime = Date.now(), timeToWait = 0) {
                 if (Array.isArray(res.body.output)) {
                     files = files.concat(res.body.output.map(f => ({
                         url : f.url,
-                        type: "exported"
+                        type : f.type,
+                        statusType: "exported"
                     })));
                 }
                 if (Array.isArray(res.body.deleted)) {
                     files = files.concat(res.body.deleted.map(f => ({
                         url : f.url,
-                        type: "deleted"
+                        type : f.type,
+                        statusType: "deleted"
                     })));
                 }
                 return files;
@@ -492,12 +495,12 @@ function downloadAttachment(table) {
 
         // Write files to FS if needed
         if (APP.dir && APP.dir != "/dev/null") {
-            if (file.type === "deleted") {
+            if (file.statusType === "deleted") {
                 const dir = Path.join(APP.dir, "deleted");
                 fs.mkdirSync(dir, { recursive: true });
-                pipeline = pipeline.pipe(fs.createWriteStream(`${dir}/${file.name}`));
+                pipeline = pipeline.pipe(fs.createWriteStream(`${dir}/${file.type}_${file.name}`));
             } else {
-                pipeline = pipeline.pipe(fs.createWriteStream(`${APP.dir}/${file.name}`));
+                pipeline = pipeline.pipe(fs.createWriteStream(`${APP.dir}/${file.type}_${file.name}`));
             }
         }
 
@@ -563,6 +566,7 @@ function authorize() {
         }
     });
 
+    let scopes = APP.scope || config.scope || "system/*.*";
     // Authorize
     return lib.requestPromise({
         method: "POST",
@@ -570,7 +574,7 @@ function authorize() {
         json  : true,
         proxy : APP.proxy,
         form  : {
-            scope: "system/*.*",
+            scope: scopes,
             grant_type: "client_credentials",
             client_assertion_type: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
             client_assertion: signed

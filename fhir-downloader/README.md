@@ -25,6 +25,7 @@ The most common options are available as CLI arguments. However, if you want to 
 - `fhir_url`    - Required. Can be overridden by the `-f` or `--fhir-url` parameter
 - `jwks`        - Optional. An array of JWK keys (must contain a public/private key pair).
 - `client_id`   - Optional. The client ID obtained at registration. If omitted, no authentication will be performed and all the settings except `fhir_url` will be ignored.
+- `scope`   	- Optional. The scope string to use for requesting the Access token.  If ommitted, system/*.* is used.
 - `token_url`   - Optional. Required if `client_id` is set. The authentication endpoint.
 - `jwks_url`    - Optional. If this is a local URL (at `localhost`, `127.0.0.1` or `0.0.0.0`), a server will be started there to host the public keys
                   from the `jwks`. In this case `jwks` is required. If this is remote URL, no server will be started and `jwks` is not required.
@@ -49,6 +50,7 @@ Tools like https://bulk-data.smarthealthit.org/ can generate such a config file 
 - `--post`                - Use POST kick-off requests
 - `--lenient`             - Sets a `Prefer: handling=lenient` request header to tell the server to try to ignore unsupported parameters
 - `--no-gzip`             - Do not request GZipped files
+- `--scope`            	  - Allows you to pass scope privileges for the Authorization Token which is needed for some backend auth services.
 - `-h, --help`            - output usage information
 
 ## Canceling export jobs

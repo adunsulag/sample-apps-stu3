@@ -2,7 +2,8 @@
 
 This is a sample CLI app that demonstrates how to implement the spec from https://github.com/smart-on-fhir/fhir-bulk-data-docs/blob/master/README.md.
 
-# Note for a good breakdown of how BULK Data API works read the presentation from https://docs.google.com/presentation/d/14ZHmam9hwz6-SsCG1YqUIQnJ56bvSqEatebltgEVR6c/edit
+# Bulk Data API Presentation 
+Note for a good breakdown of how BULK Data API works read the presentation from https://docs.google.com/presentation/d/14ZHmam9hwz6-SsCG1YqUIQnJ56bvSqEatebltgEVR6c/edit
 
 ## Screenshot
 <img src="screenshot.png" width="650" />
